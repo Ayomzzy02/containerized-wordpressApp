@@ -1,0 +1,37 @@
+version: '1.0'
+
+services: 
+  
+  #WordPress
+  wordpress: 
+    image: wordpress
+    conatainer_name: wordpress
+    restart: always
+    ports: 
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: papaSalawu
+    depends_on: 
+      - "db"
+    volumes: 
+      - wordpress:/var/www/html
+  
+  #mysql db
+  db:
+    image: mysql:8.0
+    container_name: mysqldb
+    restart: always
+
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: wordpressDB
+      MYSQL_USER: papaSalawu
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes: 
+      - db:/var/lib/mysql
